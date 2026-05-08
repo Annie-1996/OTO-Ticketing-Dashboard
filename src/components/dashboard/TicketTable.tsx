@@ -3,7 +3,7 @@ import { ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 import { tickets as allTickets, type TicketType } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
-const categories = ["VIP", "一般", "學生", "早鳥"] as const;
+const categories = ["早鳥票", "套票 / 單人票", "特殊 / 團體票"] as const;
 type Cat = (typeof categories)[number];
 
 type SortKey = "price" | "sold" | "revenue" | "progress";

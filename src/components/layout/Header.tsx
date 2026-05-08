@@ -1,6 +1,7 @@
 import { Menu } from "lucide-react";
 import { useLocation } from "@tanstack/react-router";
 import { eventInfo } from "@/lib/mock-data";
+import avatarSrc from "@/assets/ototix-avatar.png";
 
 export function Header({ onOpenMobile }: { onOpenMobile: () => void }) {
   const { pathname } = useLocation();
@@ -22,9 +23,11 @@ export function Header({ onOpenMobile }: { onOpenMobile: () => void }) {
       >
         <Menu className="h-5 w-5" />
       </button>
-      <div className="h-8 w-8 rounded-full bg-foreground text-background flex items-center justify-center text-xs font-bold">
-        OT
-      </div>
+      <img
+        src={avatarSrc}
+        alt="OTOTIX"
+        className="h-9 w-9 rounded-full object-cover bg-muted shrink-0"
+      />
       <div className="flex items-center gap-2 min-w-0 flex-1">
         <span className="text-xs text-muted-foreground hidden sm:inline">{platformLabel}</span>
         <span className="text-muted-foreground hidden sm:inline">·</span>
