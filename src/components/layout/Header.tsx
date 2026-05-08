@@ -15,7 +15,7 @@ export function Header({ onOpenMobile }: { onOpenMobile: () => void }) {
   });
 
   return (
-    <header className="h-14 flex items-center gap-3 px-4 md:px-6 border-b border-border bg-card">
+    <header className="sticky top-0 z-10 h-14 flex items-center gap-3 px-4 md:px-6 border-b border-border bg-card">
       <button
         onClick={onOpenMobile}
         className="md:hidden p-1.5 rounded hover:bg-muted"
