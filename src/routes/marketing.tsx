@@ -28,9 +28,10 @@ function MarketingPage() {
   const totalPurchases = kols.reduce((s, k) => s + k.purchases, 0);
   const overallRate = totalClicks ? (totalPurchases / totalClicks) * 100 : 0;
 
-  const { data: trafficSources = [], isLoading: trafficLoading, error: trafficError } = useQuery({
+  const { data: trafficSources = [], isLoading: trafficLoading, error: trafficError, status: trafficStatus } = useQuery({
     queryKey: ["ga4-traffic", range.from, range.to],
     queryFn: () => fetchGA4TrafficSources({ data: { startDate: range.from, endDate: range.to } }),
+    retry: false,
   });
 
   const totalUsers = trafficSources.reduce((s, t) => s + t.users, 0);
@@ -44,6 +45,13 @@ function MarketingPage() {
             <p className="text-sm text-muted-foreground mt-1">KOL 表現、轉換漏斗與流量來源</p>
           </div>
           <DateRangeFilter value={range} onChange={setRange} />
+        </div>
+
+        <div className="rounded border border-yellow-400 bg-yellow-50 p-3 text-xs font-mono text-yellow-900 space-y-1">
+          <div>GA4 狀態：{trafficStatus}</div>
+          <div>loading: {String(trafficLoading)}</div>
+          <div>error: {trafficError ? String(trafficError) : "無"}</div>
+          <div>資料筆數: {trafficSources.length}</div>
         </div>
 
 <Section title="KOL 連結表現">
