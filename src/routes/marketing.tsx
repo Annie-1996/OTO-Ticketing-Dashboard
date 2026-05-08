@@ -95,7 +95,7 @@ function MarketingPage() {
                         right: "2rem",
                       }}
                     >
-                      流失率 = (前一步活躍 − 當前活躍) / 前一步活躍
+                      每步流失的活躍使用者比例
                     </span>
                   </span>
                 </div>
