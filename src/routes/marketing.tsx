@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Info } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/layout/AppShell";
 import { Section, Card } from "@/components/dashboard/Section";
 import { DateRangeFilter, rangeFromPreset, type DateRange } from "@/components/dashboard/DateRangeFilter";
-import { kols, funnel, trafficSources } from "@/lib/mock-data";
+import { kols, funnel } from "@/lib/mock-data";
+import { fetchGA4TrafficSources } from "@/lib/ga4.server";
 
 export const Route = createFileRoute("/marketing")({
   head: () => ({
@@ -26,6 +28,11 @@ function MarketingPage() {
   const totalPurchases = kols.reduce((s, k) => s + k.purchases, 0);
   const overallRate = totalClicks ? (totalPurchases / totalClicks) * 100 : 0;
 
+  const { data: trafficSources = [], isLoading: trafficLoading } = useQuery({
+    queryKey: ["ga4-traffic", range.from, range.to],
+    queryFn: () => fetchGA4TrafficSources({ data: { startDate: range.from, endDate: range.to } }),
+  });
+
   const totalUsers = trafficSources.reduce((s, t) => s + t.users, 0);
 
   return (
@@ -39,12 +46,7 @@ function MarketingPage() {
           <DateRangeFilter value={range} onChange={setRange} />
         </div>
 
-        <div className="rounded-md border border-border bg-muted/40 px-4 py-2.5 text-xs text-muted-foreground flex items-center gap-2">
-          <Info className="h-3.5 w-3.5 shrink-0 text-accent" />
-          目前為示範數據，GA4 Data API 串接開發中。
-        </div>
-
-        <Section title="KOL 連結表現">
+<Section title="KOL 連結表現">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Metric label="總點擊數" value={totalClicks.toLocaleString()} />
             <Metric label="總購買數" value={totalPurchases.toLocaleString()} />
@@ -138,6 +140,9 @@ function MarketingPage() {
 
         <Section title="流量來源">
           <div className="rounded-lg border border-border bg-card overflow-hidden">
+            {trafficLoading && (
+              <div className="px-4 py-6 text-sm text-muted-foreground text-center">載入中…</div>
+            )}
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-xs text-muted-foreground border-b border-border">
