@@ -28,13 +28,13 @@ export function Sidebar({ collapsed, onToggleCollapsed, mobileOpen, onCloseMobil
       )}
       <aside
         className={cn(
-          "fixed z-50 md:sticky md:top-0 md:h-screen inset-y-0 left-0 flex flex-col bg-sidebar border-r border-sidebar-border transition-all duration-200",
+          "fixed z-50 md:sticky md:top-0 md:h-screen inset-y-0 left-0 flex flex-col bg-sidebar border-r border-border transition-all duration-200",
           collapsed ? "md:w-16" : "md:w-56",
           "w-64",
           mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
         )}
       >
-        <div className="h-14 flex items-center justify-between px-3 border-b border-sidebar-border">
+        <div className="h-14 flex items-center justify-between px-3 border-b border-border">
           {!collapsed && (
             <span className="text-sm font-semibold tracking-tight">OTOTIX</span>
           )}
@@ -77,7 +77,7 @@ export function Sidebar({ collapsed, onToggleCollapsed, mobileOpen, onCloseMobil
           })}
         </nav>
         {!collapsed && (
-          <div className="p-3 text-xs text-muted-foreground border-t border-sidebar-border">
+          <div className="p-3 text-xs text-muted-foreground border-t border-border">
             v0.1 · Demo
           </div>
         )}
