@@ -188,3 +188,47 @@ function Metric({ label, value, accent }: { label: string; value: string; accent
     </Card>
   );
 }
+
+function KolNameCell({ name, url }: { name: string; url: string }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+
+  return (
+    <span ref={ref} className="inline-flex items-center gap-1.5 relative">
+      <span>{name}</span>
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen((v) => !v);
+        }}
+        className="text-muted-foreground hover:text-foreground transition-colors"
+        aria-label="顯示連結"
+      >
+        <Info className="h-3.5 w-3.5" />
+      </button>
+      {open && (
+        <span className="absolute left-full top-1/2 -translate-y-1/2 ml-2 z-50 bg-foreground text-background text-[11px] leading-relaxed rounded px-2.5 py-1.5 shadow-lg whitespace-nowrap">
+          <a
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            className="underline-offset-2 hover:underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {url}
+          </a>
+        </span>
+      )}
+    </span>
+  );
+}
