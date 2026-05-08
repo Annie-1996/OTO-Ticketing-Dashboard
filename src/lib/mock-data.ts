@@ -1,6 +1,6 @@
 export const eventInfo = {
-  platform: "KKTIX",
-  eventName: "OTOTIX 2026 春季演唱會",
+  platform: "OTOTIX",
+  eventName: "2026《虎姑婆和他的朋友》沈浸特展",
   lastUpdated: new Date(),
 };
 
