@@ -65,7 +65,9 @@ function MarketingPage() {
                   const rate = (k.purchases / k.clicks) * 100;
                   return (
                     <tr key={k.name} className="border-b border-border last:border-0 hover:bg-muted/40">
-                      <td className="px-4 py-3 font-medium">{k.name}</td>
+                      <td className="px-4 py-3 font-medium">
+                        <KolNameCell name={k.name} url={k.url} />
+                      </td>
                       <td className="px-4 py-3 text-right tabular-nums">{k.clicks.toLocaleString()}</td>
                       <td className="px-4 py-3 text-right tabular-nums">{k.purchases.toLocaleString()}</td>
                       <td className="px-4 py-3 text-right tabular-nums">{rate.toFixed(2)}%</td>
