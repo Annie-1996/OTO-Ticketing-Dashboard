@@ -4,25 +4,43 @@ type GA4Row = {
   dimensionValues: { value: string }[];
   metricValues: { value: string }[];
 };
-type GA4ReportResponse = { rows?: GA4Row[] };
+type GA4ReportResponse = { rows?: GA4Row[]; error?: { message: string; status: string } };
 
 async function getAccessToken(): Promise<string> {
+  const clientId = process.env.GA_CLIENT_ID;
+  const clientSecret = process.env.GA_CLIENT_SECRET;
+  const refreshToken = process.env.GA_REFRESH_TOKEN;
+
+  if (!clientId || !clientSecret || !refreshToken) {
+    throw new Error(
+      `GA 環境變數未設定：GA_CLIENT_ID=${!!clientId}, GA_CLIENT_SECRET=${!!clientSecret}, GA_REFRESH_TOKEN=${!!refreshToken}`
+    );
+  }
+
   const res = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
-      client_id: process.env.GA_CLIENT_ID ?? "",
-      client_secret: process.env.GA_CLIENT_SECRET ?? "",
-      refresh_token: process.env.GA_REFRESH_TOKEN ?? "",
+      client_id: clientId,
+      client_secret: clientSecret,
+      refresh_token: refreshToken,
       grant_type: "refresh_token",
     }),
   });
-  const json = (await res.json()) as { access_token: string };
+
+  const json = (await res.json()) as { access_token?: string; error?: string; error_description?: string };
+
+  if (!json.access_token) {
+    throw new Error(`OAuth token 失敗：${json.error} - ${json.error_description}`);
+  }
+
   return json.access_token;
 }
 
 async function runReport(accessToken: string, body: object): Promise<GA4ReportResponse> {
   const propertyId = process.env.GA_PROPERTY_ID;
+  if (!propertyId) throw new Error("GA_PROPERTY_ID 未設定");
+
   const res = await fetch(
     `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`,
     {
@@ -34,7 +52,13 @@ async function runReport(accessToken: string, body: object): Promise<GA4ReportRe
       body: JSON.stringify(body),
     }
   );
-  return res.json() as Promise<GA4ReportResponse>;
+  const data = (await res.json()) as GA4ReportResponse;
+
+  if (data.error) {
+    throw new Error(`GA4 API 錯誤：${data.error.status} - ${data.error.message}`);
+  }
+
+  return data;
 }
 
 export type TrafficSource = { source: string; users: number };
@@ -69,7 +93,7 @@ export const fetchGA4DailyUsers = createServerFn({ method: "POST" }).handler(
       orderBys: [{ dimension: { dimensionName: "date" } }],
     });
     return (report.rows ?? []).map<DailyUsers>((row) => {
-      const raw = row.dimensionValues[0].value; // "20250101"
+      const raw = row.dimensionValues[0].value;
       const date = `${raw.slice(0, 4)}-${raw.slice(4, 6)}-${raw.slice(6, 8)}`;
       return { date, activeUsers: parseInt(row.metricValues[0].value, 10) };
     });
