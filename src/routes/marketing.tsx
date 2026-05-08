@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Info } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Section, Card } from "@/components/dashboard/Section";
