@@ -28,7 +28,7 @@ function MarketingPage() {
   const totalPurchases = kols.reduce((s, k) => s + k.purchases, 0);
   const overallRate = totalClicks ? (totalPurchases / totalClicks) * 100 : 0;
 
-  const { data: trafficSources = [], isLoading: trafficLoading, error: trafficError, status: trafficStatus } = useQuery({
+  const { data: trafficSources = [], isLoading: trafficLoading, error: trafficError } = useQuery({
     queryKey: ["ga4-traffic", range.from, range.to],
     queryFn: () => fetchGA4TrafficSources({ data: { startDate: range.from, endDate: range.to } }),
     retry: false,
@@ -47,12 +47,6 @@ function MarketingPage() {
           <DateRangeFilter value={range} onChange={setRange} />
         </div>
 
-        <div className="rounded border border-yellow-400 bg-yellow-50 p-3 text-xs font-mono text-yellow-900 space-y-1">
-          <div>GA4 狀態：{trafficStatus}</div>
-          <div>loading: {String(trafficLoading)}</div>
-          <div>error: {trafficError ? String(trafficError) : "無"}</div>
-          <div>資料筆數: {trafficSources.length}</div>
-        </div>
 
 <Section title="KOL 連結表現">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
