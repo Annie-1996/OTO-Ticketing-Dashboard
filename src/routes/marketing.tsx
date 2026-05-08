@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Info } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Section, Card } from "@/components/dashboard/Section";
@@ -65,7 +65,9 @@ function MarketingPage() {
                   const rate = (k.purchases / k.clicks) * 100;
                   return (
                     <tr key={k.name} className="border-b border-border last:border-0 hover:bg-muted/40">
-                      <td className="px-4 py-3 font-medium">{k.name}</td>
+                      <td className="px-4 py-3 font-medium">
+                        <KolNameCell name={k.name} url={k.url} />
+                      </td>
                       <td className="px-4 py-3 text-right tabular-nums">{k.clicks.toLocaleString()}</td>
                       <td className="px-4 py-3 text-right tabular-nums">{k.purchases.toLocaleString()}</td>
                       <td className="px-4 py-3 text-right tabular-nums">{rate.toFixed(2)}%</td>
@@ -95,7 +97,7 @@ function MarketingPage() {
                         right: "2rem",
                       }}
                     >
-                      流失率 = (前一步活躍 − 當前活躍) / 前一步活躍
+                      每步流失的活躍使用者比例
                     </span>
                   </span>
                 </div>
@@ -184,5 +186,49 @@ function Metric({ label, value, accent }: { label: string; value: string; accent
         {value}
       </div>
     </Card>
+  );
+}
+
+function KolNameCell({ name, url }: { name: string; url: string }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+
+  return (
+    <span ref={ref} className="inline-flex items-center gap-1.5 relative">
+      <span>{name}</span>
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen((v) => !v);
+        }}
+        className="text-muted-foreground hover:text-foreground transition-colors"
+        aria-label="顯示連結"
+      >
+        <Info className="h-3.5 w-3.5" />
+      </button>
+      {open && (
+        <span className="absolute left-full top-1/2 -translate-y-1/2 ml-2 z-50 bg-foreground text-background text-[11px] leading-relaxed rounded px-2.5 py-1.5 shadow-lg whitespace-nowrap">
+          <a
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            className="underline-offset-2 hover:underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {url}
+          </a>
+        </span>
+      )}
+    </span>
   );
 }

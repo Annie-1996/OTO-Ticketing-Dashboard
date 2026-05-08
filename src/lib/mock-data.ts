@@ -4,14 +4,11 @@ export const eventInfo = {
   lastUpdated: new Date(),
 };
 
-export const snapshot = {
-  totalQuota: 5000,
-  totalSold: 3742,
-};
+export type TicketCategory = "早鳥票" | "套票 / 單人票" | "特殊 / 團體票";
 
 export type TicketType = {
   id: number;
-  category: "VIP" | "一般" | "學生" | "早鳥";
+  category: TicketCategory;
   name: string;
   price: number;
   sold: number;
@@ -19,15 +16,23 @@ export type TicketType = {
 };
 
 export const tickets: TicketType[] = [
-  { id: 1, category: "VIP", name: "VIP 搖滾區", price: 6800, sold: 480, quota: 500 },
-  { id: 2, category: "VIP", name: "VIP 包廂", price: 8800, sold: 92, quota: 100 },
-  { id: 3, category: "一般", name: "A 區", price: 3800, sold: 850, quota: 1000 },
-  { id: 4, category: "一般", name: "B 區", price: 2800, sold: 1120, quota: 1500 },
-  { id: 5, category: "一般", name: "C 區", price: 1800, sold: 720, quota: 1200 },
-  { id: 6, category: "學生", name: "學生票 A", price: 2200, sold: 230, quota: 400 },
-  { id: 7, category: "學生", name: "學生票 B", price: 1400, sold: 180, quota: 300 },
-  { id: 8, category: "早鳥", name: "早鳥優惠票", price: 1500, sold: 70, quota: 100 },
+  { id: 1, category: "早鳥票", name: "早鳥票", price: 190, sold: 320, quota: 500 },
+  { id: 2, category: "早鳥票", name: "早鳥雙人票", price: 360, sold: 145, quota: 250 },
+  { id: 3, category: "套票 / 單人票", name: "單人票", price: 250, sold: 980, quota: 1500 },
+  { id: 4, category: "套票 / 單人票", name: "雙人票", price: 450, sold: 410, quota: 700 },
+  { id: 5, category: "套票 / 單人票", name: "四人票", price: 800, sold: 165, quota: 300 },
+  { id: 6, category: "套票 / 單人票", name: "愛心敬老票", price: 150, sold: 88, quota: 200 },
+  { id: 7, category: "套票 / 單人票", name: "商品套票（票＋商品）", price: 350, sold: 240, quota: 400 },
+  { id: 8, category: "特殊 / 團體票", name: "企業團體票", price: 180, sold: 360, quota: 600 },
+  { id: 9, category: "特殊 / 團體票", name: "幼兒園團體票", price: 140, sold: 220, quota: 400 },
 ];
+
+const _totalQuota = tickets.reduce((s, t) => s + t.quota, 0);
+const _totalSold = tickets.reduce((s, t) => s + t.sold, 0);
+export const snapshot = {
+  totalQuota: _totalQuota,
+  totalSold: _totalSold,
+};
 
 // Last 30 days daily sales
 function genDaily() {
@@ -48,12 +53,12 @@ function genDaily() {
 export const dailySales = genDaily();
 
 export const kols = [
-  { name: "林小美 @meimei", clicks: 4820, purchases: 312 },
-  { name: "音樂日記 @musicdiary", clicks: 3210, purchases: 189 },
-  { name: "Tony 說 @tonysays", clicks: 2890, purchases: 142 },
-  { name: "週末派對 @weekendparty", clicks: 1980, purchases: 88 },
-  { name: "現場直擊 @livescene", clicks: 1450, purchases: 51 },
-  { name: "城市節奏 @cityrhythm", clicks: 980, purchases: 22 },
+  { name: "林小美 @meimei", url: "https://ototix.com/kol/meimei", clicks: 4820, purchases: 312 },
+  { name: "音樂日記 @musicdiary", url: "https://ototix.com/kol/musicdiary", clicks: 3210, purchases: 189 },
+  { name: "Tony 說 @tonysays", url: "https://ototix.com/kol/tonysays", clicks: 2890, purchases: 142 },
+  { name: "週末派對 @weekendparty", url: "https://ototix.com/kol/weekendparty", clicks: 1980, purchases: 88 },
+  { name: "現場直擊 @livescene", url: "https://ototix.com/kol/livescene", clicks: 1450, purchases: 51 },
+  { name: "城市節奏 @cityrhythm", url: "https://ototix.com/kol/cityrhythm", clicks: 980, purchases: 22 },
 ];
 
 export const funnel = [
