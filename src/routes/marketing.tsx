@@ -28,7 +28,7 @@ function MarketingPage() {
   const totalPurchases = kols.reduce((s, k) => s + k.purchases, 0);
   const overallRate = totalClicks ? (totalPurchases / totalClicks) * 100 : 0;
 
-  const { data: trafficSources = [], isLoading: trafficLoading } = useQuery({
+  const { data: trafficSources = [], isLoading: trafficLoading, error: trafficError } = useQuery({
     queryKey: ["ga4-traffic", range.from, range.to],
     queryFn: () => fetchGA4TrafficSources({ data: { startDate: range.from, endDate: range.to } }),
   });
@@ -142,6 +142,11 @@ function MarketingPage() {
           <div className="rounded-lg border border-border bg-card overflow-hidden">
             {trafficLoading && (
               <div className="px-4 py-6 text-sm text-muted-foreground text-center">載入中…</div>
+            )}
+            {trafficError && (
+              <div className="px-4 py-6 text-sm text-destructive text-center">
+                GA4 錯誤：{String(trafficError)}
+              </div>
             )}
             <table className="w-full text-sm">
               <thead>
