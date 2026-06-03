@@ -4,7 +4,7 @@ export const eventInfo = {
   lastUpdated: new Date(),
 };
 
-export type TicketCategory = "早鳥票" | "套票 / 單人票" | "特殊 / 團體票";
+export type TicketCategory = "早鳥票" | "一般票" | "特殊 / 團體票";
 
 export type TicketType = {
   id: number;
@@ -16,15 +16,13 @@ export type TicketType = {
 };
 
 export const tickets: TicketType[] = [
-  { id: 1, category: "早鳥票", name: "早鳥票", price: 190, sold: 320, quota: 500 },
-  { id: 2, category: "早鳥票", name: "早鳥雙人票", price: 360, sold: 145, quota: 250 },
-  { id: 3, category: "套票 / 單人票", name: "單人票", price: 250, sold: 980, quota: 1500 },
-  { id: 4, category: "套票 / 單人票", name: "雙人票", price: 450, sold: 410, quota: 700 },
-  { id: 5, category: "套票 / 單人票", name: "四人票", price: 800, sold: 165, quota: 300 },
-  { id: 6, category: "套票 / 單人票", name: "愛心敬老票", price: 150, sold: 88, quota: 200 },
-  { id: 7, category: "套票 / 單人票", name: "商品套票（票＋商品）", price: 350, sold: 240, quota: 400 },
-  { id: 8, category: "特殊 / 團體票", name: "企業團體票", price: 180, sold: 360, quota: 600 },
-  { id: 9, category: "特殊 / 團體票", name: "幼兒園團體票", price: 140, sold: 220, quota: 400 },
+  { id: 1, category: "早鳥票", name: "早鳥票 — 成人票", price: 150, sold: 420, quota: 600 },
+  { id: 2, category: "早鳥票", name: "早鳥票 — 孩童票", price: 300, sold: 180, quota: 300 },
+  { id: 3, category: "一般票", name: "成人票", price: 190, sold: 880, quota: 1200 },
+  { id: 4, category: "一般票", name: "孩童票", price: 350, sold: 320, quota: 500 },
+  { id: 5, category: "一般票", name: "親子套票（1大1小）", price: 450, sold: 260, quota: 400 },
+  { id: 6, category: "一般票", name: "愛心敬老票（僅限現場）", price: 150, sold: 95, quota: 200 },
+  { id: 7, category: "特殊 / 團體票", name: "團體票（限平日）$225/人（20人以上）", price: 225, sold: 180, quota: 400 },
 ];
 
 const _totalQuota = tickets.reduce((s, t) => s + t.quota, 0);
