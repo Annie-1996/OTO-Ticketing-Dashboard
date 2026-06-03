@@ -80,6 +80,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "OTOTIX Dashboard" },
+      { name: "twitter:description", content: "OTOTIX 即時售票與行銷數據總覽" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4b4dc0a1-065f-45eb-9dc7-c64fe85df5a5/id-preview-93c40300--77767994-808c-4014-8c18-5f13eb08e200.lovable.app-1778466820741.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4b4dc0a1-065f-45eb-9dc7-c64fe85df5a5/id-preview-93c40300--77767994-808c-4014-8c18-5f13eb08e200.lovable.app-1778466820741.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
