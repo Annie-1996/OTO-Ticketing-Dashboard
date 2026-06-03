@@ -82,9 +82,10 @@ export const fetchGA4TrafficSources = createServerFn({ method: "POST" })
     }));
   });
 
-export const fetchGA4DailyUsers = createServerFn({ method: "POST" }).handler(
-  async (ctx) => {
-    const { startDate, endDate } = ctx.data as { startDate: string; endDate: string };
+export const fetchGA4DailyUsers = createServerFn({ method: "POST" })
+  .inputValidator((data: { startDate: string; endDate: string }) => data)
+  .handler(async ({ data }) => {
+    const { startDate, endDate } = data;
     const token = await getAccessToken();
     const report = await runReport(token, {
       dateRanges: [{ startDate, endDate }],
@@ -97,5 +98,4 @@ export const fetchGA4DailyUsers = createServerFn({ method: "POST" }).handler(
       const date = `${raw.slice(0, 4)}-${raw.slice(4, 6)}-${raw.slice(6, 8)}`;
       return { date, activeUsers: parseInt(row.metricValues[0].value, 10) };
     });
-  }
-);
+  });
