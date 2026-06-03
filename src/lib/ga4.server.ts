@@ -64,9 +64,10 @@ async function runReport(accessToken: string, body: object): Promise<GA4ReportRe
 export type TrafficSource = { source: string; users: number };
 export type DailyUsers = { date: string; activeUsers: number };
 
-export const fetchGA4TrafficSources = createServerFn({ method: "POST" }).handler(
-  async (ctx) => {
-    const { startDate, endDate } = ctx.data as { startDate: string; endDate: string };
+export const fetchGA4TrafficSources = createServerFn({ method: "POST" })
+  .inputValidator((data: { startDate: string; endDate: string }) => data)
+  .handler(async ({ data }) => {
+    const { startDate, endDate } = data;
     const token = await getAccessToken();
     const report = await runReport(token, {
       dateRanges: [{ startDate, endDate }],
@@ -79,8 +80,7 @@ export const fetchGA4TrafficSources = createServerFn({ method: "POST" }).handler
       source: row.dimensionValues[0].value,
       users: parseInt(row.metricValues[0].value, 10),
     }));
-  }
-);
+  });
 
 export const fetchGA4DailyUsers = createServerFn({ method: "POST" }).handler(
   async (ctx) => {
