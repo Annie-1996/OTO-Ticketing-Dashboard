@@ -22,7 +22,7 @@ export const tickets: TicketType[] = [
   { id: 4, category: "一般票", name: "孩童票", price: 350, sold: 320, quota: 500 },
   { id: 5, category: "一般票", name: "親子套票（1大1小）", price: 450, sold: 260, quota: 400 },
   { id: 6, category: "一般票", name: "愛心敬老票（僅限現場）", price: 150, sold: 95, quota: 200 },
-  { id: 7, category: "特殊 / 團體票", name: "團體票（限平日）$225/人（20人以上）", price: 225, sold: 180, quota: 400 },
+  { id: 7, category: "特殊 / 團體票", name: "團體票", price: 225, sold: 180, quota: 400 },
 ];
 
 const _totalQuota = tickets.reduce((s, t) => s + t.quota, 0);
